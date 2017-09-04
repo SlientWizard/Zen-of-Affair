@@ -27,7 +27,7 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Objects;
 
-public class socketService
+public class socketService implements CSSocket
 {
     private Socket socket = null;
     private BufferedReader in = null;
@@ -44,39 +44,40 @@ public class socketService
 
     public void startSocket()
     {
+        String serverLine;
+        String clientLine;
         try {
-            String serverLine = null;
-            String clientLine = null;
             do {
-                serverLine = readServer();
-                clientLine = readClient();
-                writer.println(serverLine);
-                writer.flush();
-                System.out.println("Server:" + serverLine);
+                // Attention: service should wait for the msg from client
+                clientLine = getMsg();
                 System.out.println("Client:" + clientLine);
-            }while(!Objects.equals(clientLine, "bye"));
+                serverLine = br.readLine();
+                sendMsg(serverLine);
+                System.out.println("Server:" + serverLine);
+
+            }while(!Objects.equals(serverLine, "end"));
         }catch(IOException e)
         {
             System.out.println(e);
         }
     }
 
-    private String readClient() throws IOException
+    public String getMsg() throws IOException
     {
-        //3、获取输入流，并读取客户端信息
+        // Get client input msg
         return in.readLine();
     }
 
-    private String readServer() throws IOException {
-        String line;
-        line = br.readLine();
-        return line;
+    public void sendMsg(String line) throws IOException
+    {
+        writer.println(line);
+        writer.flush();
     }
 
     public void close() throws IOException {
-        //5、关闭资源
-        writer.close(); //关闭Socket输出流
-        in.close(); //关闭Socket输入流
-        socket.close(); //关闭Socket
+        // Close resource
+        writer.close(); // Close socket output stream
+        in.close(); // Close socket input stream
+        socket.close(); // Close socket
     }
 }
