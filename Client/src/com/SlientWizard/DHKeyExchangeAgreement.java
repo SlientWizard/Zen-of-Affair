@@ -1,0 +1,18 @@
+package com.SlientWizard;
+
+// D - H Key Exchange Agreement
+// Usage: To ensure the key will not leak when exchange between client and server.
+//        Based on Big integer decomposition problem.(Discrete logarithmic problem)
+//        At the same time, this agreement will verify the identity of server by
+//        it's private key related to it's certificate
+public abstract class DHKeyExchangeAgreement {
+    protected CSSocket socket;
+    public DHKeyExchangeAgreement(CSSocket inputSocket)
+    {
+        socket = inputSocket;
+    }
+    // Get P/Pb from client or get Pa from server
+    abstract String[] getBigInt();
+    // Verify the identity of server
+    abstract void serverVerify() throws Exception;
+}
