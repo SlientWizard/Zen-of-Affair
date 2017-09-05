@@ -73,6 +73,9 @@ public class socketService implements CSSocket
         writer.flush();
     }
 
+    public Object getObject() throws IOException{}
+    public void sendObject(Object object) throws IOException{}
+
     // Close resource
     public void close() throws IOException {
         writer.close(); // Close socket output stream

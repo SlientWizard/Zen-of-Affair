@@ -10,8 +10,9 @@ public class Main {
             ServerSocket serverSocket = new ServerSocket(10241);
             System.out.println("SocketServer is waiting");
             socketService mySocket = new socketService(serverSocket.accept());
-            mySocket.startSocket();
-            mySocket.close();
+            Negotiation myNegotiation = new Negotiation(mySocket);
+            Login myLogin = new Login(mySocket,myNegotiation);
+            myLogin.start();
         }catch(IOException e) {
             System.out.println(e);
         }

@@ -7,12 +7,14 @@ package com.SlientWizard;
 //        it's private key related to it's certificate
 public abstract class DHKeyExchangeAgreement {
     protected CSSocket socket;
+    protected ServerVerify serverVerify;
     public DHKeyExchangeAgreement(CSSocket inputSocket)
     {
         socket = inputSocket;
+        serverVerify = new ServerVerify(socket);
     }
     // Get P/Pb from client or get Pa from server
     abstract String[] getBigInt();
     // Verify the identity of server
-    abstract void serverVerify() throws Exception;
+    void setServerVerify{serverVerify.verifyServer();}
 }

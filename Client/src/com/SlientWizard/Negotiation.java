@@ -7,8 +7,8 @@ import java.net.Socket;
 // Then instantialize proper objects according to negotiation result
 public abstract class Negotiation
 {
-    protected Socket socket;
-    Negotiation(Socket inputSocket)
+    protected CSSocket socket;
+    Negotiation(CSSocket inputSocket)
     {
         socket = inputSocket;
     }

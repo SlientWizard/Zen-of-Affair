@@ -69,6 +69,9 @@ public class socketClient implements CSSocket{
         return in.readLine();
     }
 
+    public void sendObject(Object object) throws IOException{}
+    public Object getObject() throws IOException{}
+
     // Close resource
     public void close() throws IOException {
         writer.close(); // Close socket output stream

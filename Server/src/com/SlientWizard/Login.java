@@ -9,8 +9,8 @@ public class Login {
     private String[] keys;
 
     // bind a socket for calling it's resource close()
-    // bind a negotiation as a selected factory to instantialize other objects
-    // user should instantialize a negotiation according to their prefer.
+    // bind a negotiation as a selected factory to instantiate other objects
+    // user should instantiate a negotiation according to their prefer.
     public Login(CSSocket inputSocket,Negotiation inputNegotiation) {
         CSSocket socket = inputSocket;
         negotiation = inputNegotiation;
@@ -23,11 +23,11 @@ public class Login {
             // Negotiation
             init();
             // DH key exchange agreement
-            String bigInt = dhKeyExchangeAgreement.getBigInt();
+            String bigInt[] = dhKeyExchangeAgreement.getBigInt();
             // including server identity verify
             dhKeyExchangeAgreement.serverVerify();
             //calc Keys
-            keys = keyFactory.createKeys(bigInt);
+            keys = keyFactory.createKeys();
             // client verify
             clientVerify.verify();
             // close socket resources
@@ -43,7 +43,7 @@ public class Login {
     {
         // Negotiate Editions and Encryption
         negotiation.negotiate();
-        // Instantialize objects according to Negotiation
+        // instantiate objects according to Negotiation
         dhKeyExchangeAgreement = negotiation.getDHKeyExchangeAgreement();
         keyFactory = negotiation.getKeyFactory();
         clientVerify = negotiation.getClientVerify();
