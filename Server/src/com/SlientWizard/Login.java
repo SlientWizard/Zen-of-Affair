@@ -25,9 +25,9 @@ public class Login {
             // DH key exchange agreement
             String bigInt[] = dhKeyExchangeAgreement.getBigInt();
             // including server identity verify
-            dhKeyExchangeAgreement.serverVerify();
+            //dhKeyExchangeAgreement.serverVerify();
             //calc Keys
-            keys = keyFactory.createKeys();
+            //keys = keyFactory.createKeys();
             // client verify
             clientVerify.verify();
             // close socket resources

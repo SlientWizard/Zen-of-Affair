@@ -11,10 +11,10 @@ public abstract class DHKeyExchangeAgreement {
     public DHKeyExchangeAgreement(CSSocket inputSocket)
     {
         socket = inputSocket;
-        serverVerify = new ServerVerify(socket);
+        //serverVerify = new ServerVerify(socket);
     }
     // Get P/Pb from client or get Pa from server
     abstract String[] getBigInt();
     // Verify the identity of server
-    void setServerVerify{serverVerify.verifyServer();}
+    //void setServerVerify{serverVerify.verifyServer();}
 }

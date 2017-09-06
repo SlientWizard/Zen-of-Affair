@@ -1,13 +1,69 @@
 package com.SlientWizard;
 
-import java.io.IOException;
+import java.io.*;
+import java.net.Socket;
+import java.util.Objects;
 
-// An interface for socket IO established between client and server
-public interface CSSocket {
-    void startSocket(); // a communication example
-    String getMsg() throws IOException;
-    void sendMsg(String Msg) throws IOException;
-    Object getObject() throws IOException;
-    void sendObject(Object object) throws IOException;
-    void close() throws IOException;   // close resources
+// An abstract for socket IO established between client and server
+public abstract class CSSocket {
+    protected Socket socket;
+    protected BufferedReader in;
+    protected PrintWriter writer;
+    protected BufferedReader br;
+    protected ObjectInputStream objectIn;
+    protected ObjectOutputStream objectOut;
+
+    public CSSocket(Socket inputSocket)throws IOException
+    {
+        socket = inputSocket;
+        // input from remote socket object
+        //in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+        // writer for remote message sending
+        //writer = new PrintWriter(socket.getOutputStream());
+        // buffer for input
+        //br = new BufferedReader(new InputStreamReader(System.in));
+        // object input
+        objectIn = new ObjectInputStream(socket.getInputStream());
+        // object output
+        objectOut = new ObjectOutputStream(socket.getOutputStream());
+    }
+
+    // A standard function for socket communication
+    public abstract void startSocket();
+
+    public String getMsg() throws IOException
+    {
+        // Get client input msg
+        return in.readLine();
+    }
+
+    public void sendMsg(String Msg) throws IOException
+    {
+        // Use flush to push message immediately
+        writer.println(Msg);
+        writer.flush();
+    }
+
+    public Object getObject() throws IOException, ClassNotFoundException
+    {
+        // Get a object and then deserialization
+        return objectIn.readObject();
+    }
+
+
+    public void sendObject(Object object) throws IOException
+    {
+        // Serialize a object and then send it
+        objectOut.writeObject(object);
+        objectOut.flush();
+    }
+
+    // Close resource
+    public void close() throws IOException {
+        writer.close();     // Close socket output stream
+        in.close();         // Close socket input stream
+        objectIn.close();   // Close socket object input stream
+        objectOut.close();  // Close socket object output stream
+        socket.close();     // Close socket
+    }
 }
