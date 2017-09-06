@@ -16,16 +16,21 @@ public abstract class CSSocket {
     public CSSocket(Socket inputSocket)throws IOException
     {
         socket = inputSocket;
+
+        // String Msg Transport
         // input from remote socket object
-        //in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+        in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         // writer for remote message sending
-        //writer = new PrintWriter(socket.getOutputStream());
+        writer = new PrintWriter(socket.getOutputStream());
         // buffer for input
-        //br = new BufferedReader(new InputStreamReader(System.in));
-        // object input
-        objectIn = new ObjectInputStream(socket.getInputStream());
+        br = new BufferedReader(new InputStreamReader(System.in));
+
+        // Object Transport
+        // socket ObjectTransport class must be created in different order in client and server, or will block
         // object output
         objectOut = new ObjectOutputStream(socket.getOutputStream());
+        // object input
+        objectIn = new ObjectInputStream(new BufferedInputStream(socket.getInputStream()));
     }
 
     // A standard function for socket communication

@@ -14,20 +14,12 @@ public class Main {
             ServerSocket serverSocket = new ServerSocket(10241);
             System.out.println("SocketServer is waiting");
             Socket socket = serverSocket.accept();
-            /*
-            socketService mySocket = new socketService(serverSocket.accept());
-            //mySocket.startSocket();
-            Object obj = mySocket.getObject();
-            System.out.print(obj);
-            mySocket.close();
-            */
-            // object input
-            ObjectInputStream objectIn = new ObjectInputStream(socket.getInputStream());
-            // object output
-            ObjectOutputStream objectOut = new ObjectOutputStream(socket.getOutputStream());
+            socketService mySocket = new socketService(socket);
 
-            System.out.println("end");
-        } catch (IOException  e) {
+            Object obj = mySocket.getObject();
+            System.out.println(obj);
+            mySocket.close();
+        } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
     }

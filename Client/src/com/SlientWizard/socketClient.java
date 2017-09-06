@@ -30,7 +30,7 @@ public class socketClient extends CSSocket{
         try {
             clientLine = br.readLine();
             sendMsg(clientLine);
-            while(!Objects.equals(clientLine, "bye")){
+            while(!Objects.equals(clientLine, "end")){
                 System.out.println("Client:" + clientLine);
                 serverLine = getMsg();
                 System.out.println("Server:" + serverLine);
