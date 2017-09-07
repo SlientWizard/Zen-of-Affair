@@ -1,7 +1,5 @@
 package com.SlientWizard;
 
-import javax.crypto.EncryptedPrivateKeyInfo;
-
 public class DefaultNegotiation extends Negotiation {
 
     DefaultNegotiation(CSSocket socket )

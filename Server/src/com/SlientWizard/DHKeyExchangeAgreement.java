@@ -8,10 +8,10 @@ package com.SlientWizard;
 public abstract class DHKeyExchangeAgreement {
     protected CSSocket socket;
     protected ServerVerify serverVerify;
-    public DHKeyExchangeAgreement(CSSocket inputSocket)
+    public DHKeyExchangeAgreement(CSSocket inputSocket,ServerVerify inputServerVerify)
     {
         socket = inputSocket;
-        //serverVerify = new ServerVerify(socket);
+        serverVerify = inputServerVerify;
     }
     // Get P/Pb from client or get Pa from server
     abstract String[] getBigInt();
