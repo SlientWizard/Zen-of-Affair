@@ -13,8 +13,8 @@ public class Main {
 	// write your code here
         try {
             Socket socket = new Socket("127.0.0.1",10241);
-            socketClient myClient = new socketClient(socket);
-            HashMap<String,String> map = new HashMap<String,  String>();
+            socketClient myClient = new socketClient(socket);   
+            HashMap<String,String> map = new HashMap<String, String>();
             map.put("MsgType","Test");
             myClient.sendObject(map);
             myClient.close();
