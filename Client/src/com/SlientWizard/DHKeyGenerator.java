@@ -1,82 +1,69 @@
 package com.SlientWizard;
 
-import javax.crypto.Cipher;
 import javax.crypto.KeyAgreement;
 import javax.crypto.SecretKey;
 import javax.crypto.interfaces.DHPrivateKey;
 import javax.crypto.interfaces.DHPublicKey;
 import javax.crypto.spec.DHParameterSpec;
-import javax.crypto.spec.SecretKeySpec;
 import java.security.*;
 import java.security.KeyFactory;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
-import java.util.HashMap;
-import java.util.Map;
 
+//Usage: generate public key and private key for DH key exchange agreement and symmetric secret key.
+//Client use generateKey() method to generate key pair
+//Server use generateKey(client's public key) method to generate key pair
 public class DHKeyGenerator {
-    private Map<String, Object> keyPair;
+    private KeyPair keyPair;
     private static final String KEY_ALGORITHM = "DH";
     private static final String SELECT_ALGORITHM = "AES";
     private static final int KEY_SIZE = 512;
-    private static final String PUBLIC_KEY = "DHPublicKey";
-    private static final String PRIVATE_KEY = "DHPrivataeKey";
-    public DHKeyGenerator() throws Exception
+    public void generateKey() throws Exception
     {
-        initKey();
-    }
-    public DHKeyGenerator(byte[] key) throws Exception
-    {
-        initKey(key);
-    }
-    public void initKey() throws Exception
-    {
-        KeyPairGenerator KeyPairGenerator = java.security.KeyPairGenerator.getInstance(KEY_ALGORITHM);
-        KeyPairGenerator.initialize(KEY_SIZE);
-        KeyPair KeyPair = KeyPairGenerator.generateKeyPair();
-        DHPublicKey publicKey = (DHPublicKey)KeyPair.getPublic();
-        DHPrivateKey privateKey = (DHPrivateKey)KeyPair.getPrivate();
-        keyPair = new HashMap(2);
-        keyPair.put(PUBLIC_KEY, publicKey);
-        keyPair.put(PRIVATE_KEY, privateKey);
-    }
-    public void initKey(byte[] key) throws Exception
-    {
-        X509EncodedKeySpec X509KeySpec = new X509EncodedKeySpec(key);
-        java.security.KeyFactory keyFactory = java.security.KeyFactory.getInstance(KEY_ALGORITHM);
-        PublicKey pubKey = keyFactory.generatePublic(X509KeySpec);
-        DHParameterSpec dhParameterSpec = ((DHPublicKey)pubKey).getParams();
-        KeyPairGenerator KeyPairGenerator = java.security.KeyPairGenerator.getInstance(KEY_ALGORITHM);
-        KeyPairGenerator.initialize(KEY_SIZE);
-        KeyPair KeyPair = KeyPairGenerator.generateKeyPair();
-        DHPublicKey publicKey = (DHPublicKey)KeyPair.getPublic();
-        DHPrivateKey privateKey = (DHPrivateKey)KeyPair.getPrivate();
-        keyPair = new HashMap(2);
-        keyPair.put(PUBLIC_KEY, publicKey);
-        keyPair.put(PRIVATE_KEY, privateKey);
+        KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance(KEY_ALGORITHM);
+        keyPairGenerator.initialize(KEY_SIZE);
+        keyPair = keyPairGenerator.generateKeyPair();
     }
 
-    public byte[] getSecretKey(byte[] publicKey, byte[] privateKey) throws Exception
+    public void generateKey(DHPublicKey publicKey) throws Exception
     {
-        java.security.KeyFactory keyFactory = KeyFactory.getInstance(KEY_ALGORITHM);
+        byte[] key = publicKey.getEncoded();
+        X509EncodedKeySpec X509KeySpec = new X509EncodedKeySpec(key);
+        KeyFactory keyFactory = KeyFactory.getInstance(KEY_ALGORITHM);
+        PublicKey pubKey = keyFactory.generatePublic(X509KeySpec);
+        DHParameterSpec dhParameterSpec = ((DHPublicKey)pubKey).getParams();
+        KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance(KEY_ALGORITHM);
+        keyPairGenerator.initialize(KEY_SIZE);
+        keyPair = keyPairGenerator.generateKeyPair();
+    }
+
+    //Client use its private key and server's public key to generate symmetric secret key.
+    // Server use its private key and client's public key to generate symmetric secret key.
+    public byte[] getSecretKey(DHPublicKey pubKey, DHPrivateKey priKey) throws Exception
+    {
+        byte[] publicKey = pubKey.getEncoded();
+        byte[] privateKey = priKey.getEncoded();
+        KeyFactory keyFactory = KeyFactory.getInstance(KEY_ALGORITHM);
         X509EncodedKeySpec x509KeySpec = new X509EncodedKeySpec(publicKey);
-        PublicKey pubKey = keyFactory.generatePublic(x509KeySpec);
+        PublicKey pubKey1 = keyFactory.generatePublic(x509KeySpec);
         PKCS8EncodedKeySpec pkcs8KeySpec = new PKCS8EncodedKeySpec(privateKey);
-        PrivateKey priKey = keyFactory.generatePrivate(pkcs8KeySpec);
+        PrivateKey priKey1 = keyFactory.generatePrivate(pkcs8KeySpec);
         KeyAgreement keyAgree = KeyAgreement.getInstance(keyFactory.getAlgorithm());
-        keyAgree.init(priKey);
-        keyAgree.doPhase(pubKey, true);
+        keyAgree.init(priKey1);
+        keyAgree.doPhase(pubKey1, true);
         SecretKey secretKey = keyAgree.generateSecret(SELECT_ALGORITHM);
         return secretKey.getEncoded();
     }
-    public byte[] getPublicKey() throws Exception
+
+    public DHPublicKey getPublicKey() throws Exception
     {
-        Key key = (Key)keyPair.get(PUBLIC_KEY);
-        return key.getEncoded();
+        DHPublicKey publicKey = (DHPublicKey) keyPair.getPublic();
+        return publicKey;
     }
-    public byte[] getPrivateKey() throws Exception
+
+    public DHPrivateKey getPrivateKey() throws Exception
     {
-        Key key = (Key)keyPair.get(PRIVATE_KEY);
-        return key.getEncoded();
+        DHPrivateKey privateKey = (DHPrivateKey) keyPair.getPrivate();
+        return privateKey;
     }
 }
