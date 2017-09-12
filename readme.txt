@@ -1,1 +1,2 @@
 1. In order to get access to MySQL, must add mysql-connector-java-5.1.44-bin.jar to Project Structure/Class Path
+2. In order to use classes which are related to cryptology, you must download jce and replace local_policy.jar and US_export_policy.jar in %JAVA_HOME/jre/lib/security. You should download jce according to the version of java. You can download jce8 for java8 by following url: http://www.oracle.com/technetwork/java/javase/downloads/jce8-download-2133166.html.
