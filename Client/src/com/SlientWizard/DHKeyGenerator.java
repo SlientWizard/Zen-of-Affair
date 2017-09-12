@@ -13,7 +13,7 @@ import java.security.spec.X509EncodedKeySpec;
 //Usage: generate public key and private key for DH key exchange agreement and symmetric secret key.
 //Client use generateKey() method to generate key pair
 //Server use generateKey(client's public key) method to generate key pair
-public class DHKeyGenerator {
+public class DHKeyGenerator implements KeyGenerator{
     private KeyPair keyPair;
     private static final String KEY_ALGORITHM = "DH";
     private static final String SELECT_ALGORITHM = "AES";
@@ -55,15 +55,13 @@ public class DHKeyGenerator {
         return secretKey.getEncoded();
     }
 
-    public DHPublicKey getPublicKey() throws Exception
+    public PublicKey getPublicKey()// throws Exception
     {
-        DHPublicKey publicKey = (DHPublicKey) keyPair.getPublic();
-        return publicKey;
+        return keyPair.getPublic();
     }
 
-    public DHPrivateKey getPrivateKey() throws Exception
+    public PrivateKey getPrivateKey() //throws Exception
     {
-        DHPrivateKey privateKey = (DHPrivateKey) keyPair.getPrivate();
-        return privateKey;
+        return keyPair.getPrivate();
     }
 }

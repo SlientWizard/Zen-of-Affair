@@ -1,7 +1,6 @@
 package com.SlientWizard;
 
 public class DefaultNegotiation extends Negotiation {
-
     DefaultNegotiation(CSSocket socket )
     {
         super(socket);

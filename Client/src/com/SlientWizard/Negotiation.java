@@ -16,6 +16,6 @@ public abstract class Negotiation
     public abstract void negotiate() throws Exception;
     // Following functions is factory functions
     public abstract DHKeyExchangeAgreement getDHKeyExchangeAgreement();
-    public abstract KeyFactory getKeyFactory();
+    public abstract KeyGenerator getKeyFactory();
     public abstract ClientVerify getClientVerify();
 }

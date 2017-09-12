@@ -5,27 +5,27 @@ package com.SlientWizard;
 
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
+import java.security.PrivateKey;
+import java.security.PublicKey;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
 
-public class RSAKeyGenerator {
+public class RSAKeyGenerator implements KeyGenerator{
 
     public KeyPair keyPair;
     public static final String KEY_ALGORITHM = "RSA";
 
-    public RSAPublicKey getPublicKey() throws Exception
+    public PublicKey getPublicKey() //throws Exception
     {
-        RSAPublicKey publicKey = (RSAPublicKey) keyPair.getPublic();
-        return publicKey;
+        return keyPair.getPublic();
     }
 
-    public RSAPrivateKey getPrivateKey() throws Exception
+    public PrivateKey getPrivateKey() //throws Exception
     {
-        RSAPrivateKey privateKey = (RSAPrivateKey) keyPair.getPrivate();
-        return privateKey;
+        return keyPair.getPrivate();
     }
 
-    public void initKey() throws Exception
+    public void generateKey() throws Exception
     {
         KeyPairGenerator keyPairGen = KeyPairGenerator.getInstance(KEY_ALGORITHM);
         keyPairGen.initialize(1024);

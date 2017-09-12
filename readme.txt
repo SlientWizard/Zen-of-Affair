@@ -1,0 +1,1 @@
+1. In order to get access to MySQL, must add mysql-connector-java-5.1.44-bin.jar to Project Structure/Class Path
