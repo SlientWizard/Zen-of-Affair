@@ -39,7 +39,7 @@ public class DHKeyGenerator implements KeyGenerator{
 
     //Client use its private key and server's public key to generate symmetric secret key.
     // Server use its private key and client's public key to generate symmetric secret key.
-    public byte[] getSecretKey(DHPublicKey pubKey, DHPrivateKey priKey) throws Exception
+    public SecretKey getSecretKey(DHPublicKey pubKey, DHPrivateKey priKey) throws Exception
     {
         byte[] publicKey = pubKey.getEncoded();
         byte[] privateKey = priKey.getEncoded();
@@ -52,7 +52,7 @@ public class DHKeyGenerator implements KeyGenerator{
         keyAgree.init(priKey1);
         keyAgree.doPhase(pubKey1, true);
         SecretKey secretKey = keyAgree.generateSecret(SELECT_ALGORITHM);
-        return secretKey.getEncoded();
+        return secretKey;
     }
 
     public PublicKey getPublicKey()// throws Exception
