@@ -37,24 +37,6 @@ public class DHKeyGenerator implements KeyGenerator{
         keyPair = keyPairGenerator.generateKeyPair();
     }
 
-    //Client use its private key and server's public key to generate symmetric secret key.
-    // Server use its private key and client's public key to generate symmetric secret key.
-    public SecretKey getSecretKey(DHPublicKey pubKey, DHPrivateKey priKey) throws Exception
-    {
-        byte[] publicKey = pubKey.getEncoded();
-        byte[] privateKey = priKey.getEncoded();
-        KeyFactory keyFactory = KeyFactory.getInstance(KEY_ALGORITHM);
-        X509EncodedKeySpec x509KeySpec = new X509EncodedKeySpec(publicKey);
-        PublicKey pubKey1 = keyFactory.generatePublic(x509KeySpec);
-        PKCS8EncodedKeySpec pkcs8KeySpec = new PKCS8EncodedKeySpec(privateKey);
-        PrivateKey priKey1 = keyFactory.generatePrivate(pkcs8KeySpec);
-        KeyAgreement keyAgree = KeyAgreement.getInstance(keyFactory.getAlgorithm());
-        keyAgree.init(priKey1);
-        keyAgree.doPhase(pubKey1, true);
-        SecretKey secretKey = keyAgree.generateSecret(SELECT_ALGORITHM);
-        return secretKey;
-    }
-
     public PublicKey getPublicKey()// throws Exception
     {
         return keyPair.getPublic();
